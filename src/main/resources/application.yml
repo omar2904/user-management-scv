@@ -12,6 +12,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+      type:
+        descriptor:
+          sql:
+            info
+      format_sql:
+        true
     show-sql: true
 
   security:
