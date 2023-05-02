@@ -1,0 +1,35 @@
+debug: true
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  datasource:
+    password: root_pass_1234
+    url: jdbc:mysql://localhost:3306/projectdb
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId: 1074704084080-7ad7vp3qqdva1c7grm4qtl0oinrq8l4r.apps.googleusercontent.com
+            clientSecret: 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
+            scope:
+              - email
+              - profile
+
+          facebook:
+            clientId: 631899185643239
+            clientSecret: 69830c1a42075cdc0583f0d4f9fb4a1a
+            scope:
+              - email
+              - public_profile
+
+
