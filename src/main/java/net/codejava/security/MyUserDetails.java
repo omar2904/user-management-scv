@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import user.Data.entity.User;
+import net.codejava.user.Data.entity.User;
 
 public class MyUserDetails implements UserDetails {
 
@@ -27,8 +27,9 @@ public class MyUserDetails implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return user.getUsername();
+		return user.getEmail();
 	}
+
 
 	@Override
 	public boolean isAccountNonExpired() {
@@ -47,7 +48,7 @@ public class MyUserDetails implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return user.isEnabled();
+		return true;
 	}
 
 }

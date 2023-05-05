@@ -1,10 +1,10 @@
-package user.Data.entity;
+package net.codejava.user.Data.entity;
 
-import common.AbstractEntity;
+import net.codejava.common.AbstractEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import common.enums.AuthenticationTypeE;
+import net.codejava.common.enums.AuthenticationTypeE;
 
 import javax.persistence.*;
 
@@ -15,11 +15,11 @@ import javax.persistence.*;
 @Table(name = "users")
 @Inheritance(strategy=InheritanceType.JOINED)
 public class User extends AbstractEntity {
-	private String username;
+	private String fullname;
 	private String email;
 	private String password;
-	private boolean enabled;
-
+	private boolean verified;
+	private String token;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "auth_type")

@@ -1,4 +1,4 @@
-package common;
+package net.codejava.common;
 
 import lombok.Data;
 import lombok.Getter;

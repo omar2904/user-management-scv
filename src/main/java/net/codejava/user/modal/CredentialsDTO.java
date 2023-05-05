@@ -1,4 +1,4 @@
-package user.modal;
+package net.codejava.user.modal;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

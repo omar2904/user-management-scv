@@ -22,7 +22,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public UserDetailsService userDetailsService() {
 		return new UserDetailsServiceImpl();
 	}
-	
+
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -39,34 +39,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(authenticationProvider());
+		auth.userDetailsService(userDetailsService());
 	}
+
+
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/", "/login").permitAll()
-			.anyRequest().authenticated()
-			.and()
-			.formLogin().permitAll()
+				.antMatchers("/**").permitAll() // allow all URLs
+				.anyRequest().authenticated()
+				.and()
+				.formLogin()
 				.loginPage("/login")
 				.usernameParameter("email")
 				.passwordParameter("pass")
-				.successHandler(databaseLoginSuccessHandler)				
-			.and()
-			.oauth2Login()
+				.successHandler(databaseLoginSuccessHandler)
+				.and()
+				.oauth2Login()
 				.loginPage("/login")
 				.userInfoEndpoint()
-					.userService(oauth2UserService)
+				.userService(oauth2UserService)
 				.and()
 				.successHandler(oauthLoginSuccessHandler)
-			.and()
-			.logout().logoutSuccessUrl("/").permitAll()
-			.and()
-			.exceptionHandling().accessDeniedPage("/403")
-			;
+				.and()
+				.logout().logoutSuccessUrl("/").permitAll()
+				.and()
+				.exceptionHandling().accessDeniedPage("/403");
 	}
-	
+
 	@Autowired
 	private CustomOAuth2UserService oauth2UserService;
 	
