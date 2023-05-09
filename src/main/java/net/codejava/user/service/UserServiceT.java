@@ -29,9 +29,10 @@ public class UserServiceT {
         User user = userRepo.findByEmailAndPassword(credentialsDTO.email, credentialsDTO.getPassword());
 
         if(user != null)
-            return new UserDTO(user.getFullname(), user.getAuthType());
+            return new UserDTO(user.getFullname(), user.getAuthType(),
+                    user.isVerified(), user.getToken(), user.isProfileCompleted(), user.getAge(), user.getHeight(), user.getWeight(), user.getRole());
         else
-            return new UserDTO(null, null);
+            return new UserDTO();
     }
 
     public UserDTO UserRegsiter(CredentialsDTO credentialsDTO, UserDTO userDTO){
@@ -46,13 +47,17 @@ public class UserServiceT {
                             "\n" +
                             "Use the following link to confirm your email address:\n" + "http://localhost:8080/verify?token=" + token);
 
-            userRepo.save(new User(userDTO.getFullName(), credentialsDTO.getEmail(), passwordEncoder().encode(credentialsDTO.getPassword()),false, token, userDTO.getAuthType()));
-            return new UserDTO(userDTO.getFullName(), userDTO.getAuthType());
+            user = new User(userDTO.getFullName(), credentialsDTO.getEmail(), passwordEncoder().encode(credentialsDTO.getPassword())
+                    ,false, token, false, 0, 0, 0, userDTO.getAuthType(), userDTO.getRole());
+            userRepo.save(user);
+            return new UserDTO(user.getFullname(), user.getAuthType(),
+                    user.isVerified(), user.getToken(), user.isProfileCompleted(), user.getAge(), user.getHeight(), user.getWeight(), user.getRole());
+
         }
 
         else
         {
-            return new UserDTO(null, null);
+            return new UserDTO();
         }
 
 
@@ -68,8 +73,26 @@ public class UserServiceT {
 
         if (user == null)
         {
-            userRepo.save(new User(userDTO.getFullName(), credentialsDTO.getEmail(), credentialsDTO.getPassword(),true, "", userDTO.getAuthType()));
+            userRepo.save(new User(userDTO.getFullName(), credentialsDTO.getEmail(), credentialsDTO.getPassword(),true, "",false, 0, 0, 0, userDTO.getAuthType(), userDTO.getRole()));
         }
 
+    }
+
+    public UserDTO Profile(CredentialsDTO credentialsDTO, UserDTO userDTO) {
+        User user = userRepo.getByEmail(credentialsDTO.email);
+
+        if(user != null) {
+            user.setAge(userDTO.getAge());
+            user.setHeight(userDTO.getHeight());
+            user.setWeight(userDTO.getWeight());
+            user.setProfileCompleted(true);
+
+            userRepo.save(user);
+
+            return new UserDTO(user.getFullname(), user.getAuthType(),
+                    user.isVerified(), user.getToken(), user.isProfileCompleted(), user.getAge(), user.getHeight(), user.getWeight(), user.getRole());
+        }
+        else
+            return new UserDTO();
     }
 }

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.codejava.common.enums.AuthenticationTypeE;
+import net.codejava.common.enums.RoleTypeE;
 import net.codejava.user.modal.CredentialsDTO;
 import net.codejava.user.modal.UserDTO;
 import net.codejava.user.service.UserServiceT;
@@ -18,14 +19,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class OAuthLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-	@Autowired
+
 	private final UserServiceT userService;
 
-	private final CredentialsDTO credentialsDTO = new CredentialsDTO();
-	private final UserDTO userDTO = new UserDTO();
-
-	public OAuthLoginSuccessHandler(UserServiceT userService) {
+	private final CredentialsDTO credentialsDTO;
+	private final UserDTO userDTO;
+	@Autowired
+	public OAuthLoginSuccessHandler(UserServiceT userService, CredentialsDTO credentialsDTO, UserDTO userDTO) {
 		this.userService = userService;
+		this.credentialsDTO = credentialsDTO;
+		this.userDTO = userDTO;
 	}
 
 	@Override
@@ -37,6 +40,7 @@ public class OAuthLoginSuccessHandler extends SavedRequestAwareAuthenticationSuc
 		credentialsDTO.setPassword("");
 		userDTO.setFullName(oauth2User.getName());
 		userDTO.setAuthType(AuthenticationTypeE.valueOf(oauth2User.getOauth2ClientName()));
+		userDTO.setRole(RoleTypeE.valueOf("coach"));
 
 		userService.FacebookOrGoogle(credentialsDTO, userDTO);
 		

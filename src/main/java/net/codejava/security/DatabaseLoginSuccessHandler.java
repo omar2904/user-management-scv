@@ -6,7 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.codejava.common.enums.AuthenticationTypeE;
 import net.codejava.user.modal.CredentialsDTO;
 import net.codejava.user.modal.UserDTO;
 import net.codejava.user.service.UserServiceT;
@@ -18,13 +17,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class DatabaseLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-	@Autowired
+
 	private final UserServiceT userService;
 
-	private final CredentialsDTO credentialsDTO = new CredentialsDTO();
-
-	public DatabaseLoginSuccessHandler(UserServiceT userService) {
+	private final CredentialsDTO credentialsDTO;
+	private final UserDTO userDTO;
+	@Autowired
+	public DatabaseLoginSuccessHandler(UserServiceT userService, CredentialsDTO credentialsDTO, UserDTO userDTO) {
 		this.userService = userService;
+		this.credentialsDTO = credentialsDTO;
+		this.userDTO = userDTO;
 	}
 
 	@Override
@@ -37,7 +39,13 @@ public class DatabaseLoginSuccessHandler extends SavedRequestAwareAuthentication
 		credentialsDTO.setEmail(userDetails.getUsername());
 		credentialsDTO.setPassword(userDetails.getPassword());
 
-		userService.UserLogin(credentialsDTO);
+		UserDTO user =  userService.UserLogin(credentialsDTO);
+
+		userDTO.setFullName(user.getFullName());
+		userDTO.setHeight(user.getHeight());
+		userDTO.setWeight(user.getWeight());
+		userDTO.setAge(user.getAge());
+		userDTO.setRole(user.getRole());
 
 		super.onAuthenticationSuccess(request, response, authentication);
 	}

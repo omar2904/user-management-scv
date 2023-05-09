@@ -8,8 +8,14 @@
 	<br>
 	<div><h1>Basefit</h1></div>
 	<div>
-		<br/>
+		<br/><br>
 		<h4><a sec:authorize = "not isAuthenticated()" th:href="@{/login}">Login</a></h4>
+		<div sec:authorize = "isAuthenticated()" th:if="${role} == 'trainee'">
+			<h4><a th:href="@{/profile}">Profile</a></h4>
+		</div><br>
+		<div sec:authorize = "isAuthenticated()" th:if="${role} == 'coach'">
+			<h4><a th:href="@{/profile}">Add Assistants</a></h4>
+		</div>
 		<br/>
 		<br/>
 	</div>

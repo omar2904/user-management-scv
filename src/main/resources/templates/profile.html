@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http:/www.thymeleaf.org">
+<head th:replace="fragments :: html_head(pageTitle='Profile')" />
+<body>
+<div class="container text-center">
+    <br>
+    <div th:replace="fragments :: header"></div>
+    <br>
+    <div>
+        <h2>Profile</h2>
+        <br/>
+    </div>
+
+    <form th:action="@{/profile}" method="post" style="max-width: 400px; margin: 0 auto;">
+        <div class="border border-secondary rounded p-3">
+            <div>
+                <p><input type="text" name="fullname" required th:value="${fullname}" class="form-control" placeholder="Full name" /></p>
+            </div>
+            <div>
+                <p><input type="email" name="email" required th:value="${email}" class="form-control" placeholder="E-mail" /></p>
+            </div>
+            <div>
+                <p><input type="text" name="age" required th:value="${age}" class="form-control" placeholder="Age" /></p>
+            </div>
+            <div>
+                <p><input type="text" name="weight" required th:value="${weight}" class="form-control" placeholder="Weight" /></p>
+            </div>
+            <div>
+                <p><input type="text" name="height" required th:value="${height}" class="form-control" placeholder="Height" /></p>
+            </div>
+            <div>
+                <p><input type="submit" value="Save" class="btn btn-primary" /></p>
+            </div>
+        </div>
+    </form>
+    <br>
+</div>
+</body>
+</html>
